@@ -1,16 +1,49 @@
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background: linear-gradient(#121212,#212b46);
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+
 .container{
-    height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    background: linear-gradient(#121212,#212b46);
+    text-align: center;
+    margin: auto 0;
+    height: 100vh;
+}
+
+.container #painelFav {
+    padding: 20px;
+    padding-top: 20px;
+    margin-top: 20px;
+    height: 100%;
+    background-size: cover;
+    width: 100%;
+}
+
+.PainelFavoritos {
+    margin-top: 20px;
+    margin-right: 20px;
+    background-color: #999999;
+}
+
+.fas {
+    color:  #ccc;
 }
 
 .title{
-    font-size: 85px;
+    font-size: 65px;
     color: #fff;
     animation: flipTitle 2s;
+    margin: 20px;   
 }
 
 @keyframes flipTitle{
@@ -57,14 +90,25 @@
   transform: scale(1.2);
 }
 
+.buttonCard {
+    background-color: #cccccc;
+    border: 2px solid #999999;
+    border-radius: 8px;
+    color: #000;
+    font-size: 16px;
+}
+
 .main{
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    background-color: #fff;
+    background-color: rgb(255, 255, 255);
     width: 500px;
     border-radius: 8px;
+    margin-bottom: 50px;
+    padding-top: 20px;
+    padding-bottom: 20px    ;
 }
 
 .main h2{
@@ -88,4 +132,20 @@
         width: 80%;
         min-height: 250px;
     }
+
 }
+
+@media (max-width: 768px) {
+    .title {
+      font-size: 26 px; /* Tamanho da fonte para dispositivos móveis. Ajuste conforme necessário. */
+    }
+    .main  {
+        margin: auto;
+        margin-bottom: 20px;
+        padding-top: 20px;
+    }
+    .container {
+        margin: auto;
+        padding-top: 20px;
+    }
+  }
