@@ -149,3 +149,44 @@ body {
         padding-top: 20px;
     }
   }
+  .buttonFavoritos {
+    background-color: transparent;
+    border: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: transform 0.5s;
+    margin-left: 8px;
+  }
+  
+  .buttonFavoritos:hover {
+    transform: scale(1.2);
+  }
+  
+  .atleta-favorito {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 20px;
+  }
+  
+  .atleta-favorito img {
+    max-width: 100%;
+    border-radius: 8px;
+  }
+  
+  .atleta-info {
+    margin-top: 10px;
+    text-align: center;
+  }
+  
+  .atleta-info h2 {
+    font-size: 20px;
+    margin: 5px 0;
+  }
+  
+  .atleta-info p {
+    font-size: 16px;
+    color: #999;
+  }

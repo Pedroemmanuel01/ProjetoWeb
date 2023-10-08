@@ -1,142 +1,93 @@
-import { useState } from 'react';
-import { FiSearch } from 'react-icons/fi';
+import React, { useState } from 'react';
+import { FiSearch, FiStar } from 'react-icons/fi';
 import './style.css';
 import CardAtleta from './CardAtleta';
-import PainelFavoritos  from './painelFavoritos';
+import PainelFavoritos from './painelFavoritos';
 
 function App() {
-  const [listaJ, setListaJ]=useState([])
+  const [listaJ, setListaJ] = useState([]);
   const [input, setInput] = useState('');
-  const [jogador, setJogador] = useState({ nome: '', posicao: '', idade: '', imagem: '' });
-  const [status,setStatus]=useState(true)
-  const[mostrarCard, setMostrarCard]=useState(false)
-  const classesParaOcultar = ['title', 'containerInput'];
+  const [jogador, setJogador] = useState({
+    nome: '',
+    posicao: '',
+    idade: '',
+    imagem: '',
+  });
+  const [mostrarCard, setMostrarCard] = useState(false);
+  const [mostrarFavoritos, setMostrarFavoritos] = useState(false);
 
-  let keyM = "<API KEY>";
-  let UrlBase = `https://apiv3.apifootball.com/?action=get_players&player_name=${input}&APIkey=${keyM}`;
+  const handleSearch = async () => {
+    if (input === '') {
+      alert('Digite o nome de um Jogador');
+      return;
+    }
 
-  function ocultarElementosPorClasse(classes) {
-    classes.forEach(classe => {
-      const elementos = document.querySelectorAll('.' + classe);
-  
-      elementos.forEach(elemento => {
-        elemento.style.display = 'none';
-      });
-    });
-  }
-  
-  
-  const voltaP =()=>{
-    setStatus(true)
-    setMostrarCard(true)
-    setJogador({ nome: '', posicao: '', idade: '', imagem: '' })
-    setMostrarCard(false)
- }
+    try {
+      const keyM = "96dc42be1ae3e92b7a643494c04e0ec81baa62bc247d502be896c2960ab1213a";
+      const UrlBase = `https://apiv3.apifootball.com/?action=get_players&player_name=${input}&APIkey=${keyM}`;
+      const resposta = await fetch(UrlBase);
+      const dados = await resposta.json();
 
-  var handleKeyPress = (event) => {
-    if (event.key === 'Enter') {
-      handleSearch();
+      if (dados && dados.length > 0) {
+        const jogadorData = {
+          nome: dados[0].player_name,
+          idade: dados[0].player_age,
+          camisa: dados[0].player_number,
+          time: dados[0].team_name,
+          imagem: dados[0].player_image,
+        };
+        setJogador(jogadorData);
+        setMostrarCard(true);
+        // Oculta o card de favoritos ao pesquisar novamente
+        setMostrarFavoritos(false);
+      } else {
+        alert('Jogador não encontrado');
+      }
+    } catch (err) {
+      console.error(err.message);
+      alert('Erro ao buscar jogador');
     }
   };
 
-  async function handlePainelFavoritos() {
-    if (listaJ.length === 0){
-      setMostrarCard(false)
-      console.log(listaJ)
-      
-      ocultarElementosPorClasse(classesParaOcultar)
-
-      return (
-      <div className="container">
-      
-        <div>
-          <i class="fas fa-star">
-            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"></link>
-          </i>
-          <button className='PainelFavoritos' type="button" onClick={handlePainelFavoritos}>Painel Favoritos</button>
-
-        </div>    
-
-        <div>
-          <button className='buttonCard' id='voltar' onClick={voltaP}>Voltar</button>
-        </div>
-      </div>
-        
-      )
-    } else {
-      setMostrarCard(false)
-      console.log(listaJ)
-      ocultarElementosPorClasse(classesParaOcultar)
-      return (
-
-
-        <PainelFavoritos listaJ={listaJ} setStatus={setStatus} setJogador={setJogador} setMostrarCard={setMostrarCard}></PainelFavoritos>
-
-
-      )
-    }
-  }
-
-  async function handleSearch() {
-    setMostrarCard(true)
-    if (input === '') {
-      alert("Digite o nome de um Jogador");
-      return;
-      
-    }else {
-        try{
-          let resposta = await fetch(UrlBase);
-          let dados = await resposta.json();
-          setJogador({
-            nome: dados[0].player_name,
-            idade: dados[0].player_age,
-            camisa: dados[0].player_number,
-            time: dados[0].team_name,
-            imagem: dados[0].player_image
-          });
-          setMostrarCard(true);
-        } catch (err) {
-          console.log(err.message)
-          alert("Digite o nome de um Jogador");
-        }
-
-    }
-    
-  }
+  const handleMostrarFavoritos = () => {
+    setMostrarFavoritos(!mostrarFavoritos);
+    // Quando você clica em favoritos, oculta o card de atleta
+    setMostrarCard(false);
+  };
 
   return (
     <div className="container">
-      
-      <div>
-        <i class="fas fa-star">
-          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"></link>
-        </i>
-        <button className='PainelFavoritos' type="button" onClick={handlePainelFavoritos}>Painel Favoritos</button>
+      <h1 className="title">Buscador de Jogador</h1>
 
-      </div>
-      <h1 className='title'>Buscador de Jogador</h1>
-
-      <div className='containerInput'>
+      <div className="containerInput">
         <input
-          type='text'
-          id='searchInput'
-          placeholder='Digite o Jogador...'
+          type="text"
+          id="searchInput"
+          placeholder="Digite o Jogador..."
           value={input}
-          onKeyPress={handleKeyPress}
-          onChange={(e) => setInput(e.target.value)
-          }
+          onChange={(e) => setInput(e.target.value)}
         />
 
-        <button className='buttonSearch'  type="button" onClick={handleSearch}>
-          <FiSearch size={25} color='#fff' />
+        <button className="buttonSearch" type="button" onClick={handleSearch}>
+          <FiSearch size={25} color="#fff" />
+        </button>
+
+        <button className="buttonFavoritos" type="button" onClick={handleMostrarFavoritos}>
+          <FiStar size={25} color="#fff" />
         </button>
       </div>
 
-      {/* Renderize o CardAtleta somente se os dados do jogador estiverem disponíveis */}
       {mostrarCard && (
-        <CardAtleta jogador={jogador} setMostrarCard={setMostrarCard}  setInput={setInput} listaJ={listaJ} setListaJ={setListaJ} status={status} setStatus={setStatus} setJogador={setJogador}/>
+        <CardAtleta
+          jogador={jogador}
+          setMostrarCard={setMostrarCard}
+          setInput={setInput}
+          listaJ={listaJ}
+          setListaJ={setListaJ}
+        />
       )}
 
+      {mostrarFavoritos && <PainelFavoritos listaJ={listaJ} />}
     </div>
   );
 }
