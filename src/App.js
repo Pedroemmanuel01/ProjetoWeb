@@ -54,6 +54,14 @@ function App() {
     // Quando você clica em favoritos, oculta o card de atleta
     setMostrarCard(false);
   };
+  const handleVoltar = () => {
+    setMostrarFavoritos(false); // Oculta o card de favoritos ao clicar em "Voltar"
+  };
+  function handleKeyPress(event) {
+    if (event.key === 'Enter') {
+      handleSearch(); // Chame a função de pesquisa quando "Enter" for pressionado
+    }
+  }
 
   return (
     <div className="container">
@@ -66,6 +74,7 @@ function App() {
           placeholder="Digite o Jogador..."
           value={input}
           onChange={(e) => setInput(e.target.value)}
+          onKeyPress={handleKeyPress}
         />
 
         <button className="buttonSearch" type="button" onClick={handleSearch}>
@@ -87,7 +96,7 @@ function App() {
         />
       )}
 
-      {mostrarFavoritos && <PainelFavoritos listaJ={listaJ} />}
+      {mostrarFavoritos && (<PainelFavoritos listaJ={listaJ} onVoltar={handleVoltar}/>)}
     </div>
   );
 }
