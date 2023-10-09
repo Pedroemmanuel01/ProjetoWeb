@@ -1,14 +1,7 @@
 import React from 'react';
 import './PainelFavoritos.css'; // Importe o arquivo CSS separado
 
-function PainelFavoritos({ listaJ, setStatus, setJogador, setMostrarCard }) {
-
-  const voltaP = () => {
-    setStatus(true);
-    setMostrarCard(true);
-    setJogador({ nome: '', posicao: '', idade: '', imagem: '' });
-    setMostrarCard(false);
-  }
+function PainelFavoritos({ listaJ, onVoltar }) {
 
   return (
     <div className="container" id="painelFav">
@@ -29,7 +22,7 @@ function PainelFavoritos({ listaJ, setStatus, setJogador, setMostrarCard }) {
           </div>
       }
       <div>
-        <button className="buttonCard" id="voltar" onClick={voltaP}>Voltar</button>
+        <button className="buttonCard" id="voltar" onClick={onVoltar}>Voltar</button>
       </div>
     </div>
   );
