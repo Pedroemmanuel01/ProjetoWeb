@@ -126,11 +126,11 @@ body {
         font-size: 60px;
     }
     .main h2{
-        font-size: 28px;
+        font-size: 00px;
     }
     .main{
         width: 80%;
-        min-height: 250px;
+        min-height: 280px;
     }
 
 }
